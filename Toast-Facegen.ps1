@@ -520,7 +520,7 @@ try {
         try {
             Get-Process -Name "CreationKit" -ErrorAction Stop
         } catch {
-            if ($timeout -eq 60 -or ($i -ge 1 -and $percentComplete -lt 100 -and $process.HasExited)) { break }
+            if ($timeout -eq 60 -or ($i -ge 1 -and $percentComplete -lt 100)) { break }
             #Times out after 1 minute if the Creation Kit process isn't detected.
         }
 
