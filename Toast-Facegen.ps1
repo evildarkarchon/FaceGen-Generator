@@ -520,7 +520,7 @@ try {
         try {
             Get-Process -Name "CreationKit" -ErrorAction Stop
         } catch {
-            if ($timeout -eq 60) { break }
+            if ($timeout -eq 60 -or ($i -ge 1 -and $percentComplete -lt 100 -and $process.HasExited)) { break }
             #Times out after 1 minute if the Creation Kit process isn't detected.
         }
 
@@ -545,6 +545,10 @@ try {
             Write-Progress -Activity "Created $i out of $TotalCount Faces..." -Status "Elapsed time: $formattedTime" -PercentComplete $percentComplete -SecondsRemaining $remainingTimeSeconds
         } else {
             Write-Progress -Activity "Created $i out of $TotalCount Faces..." -Status "Elapsed time: $formattedTime" -PercentComplete $percentComplete
+        }
+
+        if ($remainingItems -ge 1 -and $i -ge 1 -and $process.HasExited) {
+            break
         }
     }
     Write-Progress -Activity "Creating Facegen..." -Status "Completed" -PercentComplete 100 -Completed
